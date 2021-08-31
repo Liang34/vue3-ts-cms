@@ -3,13 +3,13 @@ vbasse
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
     <el-tabs type="border-card" stretch>
-      <el-tab-pane>
+      <el-tab-pane name="account">
         <template #label>
           <span><i class="el-icon-user-solid"></i> 账号登录</span>
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane name="phone">
         <template #label>
           <span><i class="el-icon-mobile-phone"></i> 手机登录</span>
         </template>
@@ -29,7 +29,7 @@ vbasse
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import LoginAccount from './login-account.vue'
 import LoginPhone from './login-phone.vue'
 export default defineComponent({
@@ -38,7 +38,27 @@ export default defineComponent({
     LoginPhone
   },
   setup() {
-    return {}
+    // 定义属性
+    const isKeepPassword = ref(true)
+    const accountRef = ref<InstanceType<typeof LoginAccount>>()
+    const phoneRef = ref<InstanceType<typeof LoginPhone>>()
+    const currentTab = ref('account')
+
+    // 定义方法
+    const handleLoginClick = () => {
+      if (currentTab.value === 'account') {
+        accountRef.value?.loginAction(isKeepPassword.value)
+      } else {
+        console.log(phoneRef)
+      }
+    }
+    return {
+      isKeepPassword,
+      accountRef,
+      phoneRef,
+      currentTab,
+      handleLoginClick
+    }
   }
 })
 </script>
